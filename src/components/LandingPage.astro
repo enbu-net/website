@@ -1,0 +1,446 @@
+---
+import { Image } from 'astro:assets';
+import enbuLogo from '../../../enbu/assets/icon.png';
+import '../styles/home.css';
+
+type Locale = 'en' | 'ja';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isJapanese = locale === 'ja';
+const releaseUrl = 'https://github.com/yashikota/enbu/releases/latest';
+const releaseApiUrl = 'https://api.github.com/repos/yashikota/enbu/releases/latest';
+const repositoryUrl = 'https://github.com/yashikota/enbu';
+const licenseUrl = 'https://github.com/yashikota/enbu/blob/main/LICENSE';
+
+const downloads = [
+	{
+		id: 'macos',
+		name: 'macOS',
+		detail: 'Apple silicon · DMG',
+	},
+	{
+		id: 'windows-amd64',
+		name: 'Windows',
+		detail: 'x64 · EXE',
+	},
+	{
+		id: 'windows-arm64',
+		name: 'Windows',
+		detail: 'Arm64 · EXE',
+	},
+	{
+		id: 'linux-amd64',
+		name: 'Linux',
+		detail: 'x64 · tar.gz',
+	},
+	{
+		id: 'linux-arm64',
+		name: 'Linux',
+		detail: 'Arm64 · tar.gz',
+	},
+];
+
+const translations = {
+	en: {
+		description: 'Manage end-to-end encrypted .env secrets with your team, entirely through GitHub.',
+		ogTitle: 'enbu — .env management, secured by your team',
+		ogDescription: 'A GitHub-native, end-to-end encrypted .env manager for development teams.',
+		title: 'enbu — GitHub-native .env management',
+		navLabel: 'Main navigation',
+		docs: 'Docs',
+		heroSummary: 'enbu keeps team secrets end-to-end encrypted and moves them through the GitHub workflow you already use.',
+		chooseDownload: 'Choose a download',
+		downloadMacos: 'Download for macOS',
+		downloadWindows: 'Download for Windows',
+		downloadLinux: 'Download for Linux',
+		mobileDownload: 'Choose a desktop download',
+		downloadDetail: 'Desktop builds for macOS, Windows, and Linux',
+		allAssets: 'All release assets',
+		previewLabel: 'enbu desktop application preview',
+		securityKicker: 'SECURE BY DEFAULT',
+		securityTitle: 'Your secrets stay with your team.',
+		securitySummary: 'enbu uses GitHub as the shared layer without giving GitHub your plaintext values.',
+		features: [
+			['End-to-end encrypted', "Only a team member's local private key can decrypt a secret."],
+			['GitHub-native', 'No separate secret service, contract, or team account to operate.'],
+			['Stored in your keychain', 'Private keys stay in macOS Keychain, Secret Service, or Windows Credential Manager.'],
+		],
+		footer: 'GitHub-native, end-to-end encrypted environment management.',
+	},
+	ja: {
+		description: 'チームの.envシークレットをエンドツーエンド暗号化し、GitHubだけで安全に管理します。',
+		ogTitle: 'enbu — GitHubで安全に.envを管理',
+		ogDescription: '開発チーム向けのGitHubネイティブなエンドツーエンド暗号化.envマネージャー。',
+		title: 'enbu — GitHubネイティブな.env管理',
+		navLabel: 'メインナビゲーション',
+		docs: 'ドキュメント',
+		heroSummary: 'enbuはチームのシークレットをエンドツーエンド暗号化し、いつものGitHubワークフローで安全に受け渡します。',
+		chooseDownload: 'ダウンロードを選択',
+		downloadMacos: 'macOS版をダウンロード',
+		downloadWindows: 'Windows版をダウンロード',
+		downloadLinux: 'Linux版をダウンロード',
+		mobileDownload: 'デスクトップ版を選択',
+		downloadDetail: 'macOS、Windows、Linuxに対応',
+		allAssets: 'すべての配布物を見る',
+		previewLabel: 'enbuデスクトップアプリのプレビュー',
+		securityKicker: '最初から安全に',
+		securityTitle: 'シークレットはチームの中だけに。',
+		securitySummary: 'enbuはGitHubを共有基盤として利用しますが、平文の値をGitHubへ渡しません。',
+		features: [
+			['エンドツーエンド暗号化', 'シークレットを復号できるのは、各メンバーがローカルに持つ秘密鍵だけです。'],
+			['GitHubネイティブ', '専用サービスの契約や、別のチームアカウントを運用する必要はありません。'],
+			['OSの安全な領域に保存', '秘密鍵はmacOS Keychain、Secret Service、Windows Credential Managerに保存します。'],
+		],
+		footer: 'GitHubネイティブなエンドツーエンド暗号化環境管理。',
+	},
+} as const;
+
+const text = translations[locale];
+const languages = [
+	{ locale: 'en', label: 'English', href: '/' },
+	{ locale: 'ja', label: '日本語', href: '/ja/' },
+] as const;
+const currentLanguage = languages.find((language) => language.locale === locale) ?? languages[0];
+---
+
+<!doctype html>
+<html lang={locale}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={text.description} />
+		<meta name="theme-color" content="#0d1117" />
+		<meta property="og:title" content={text.ogTitle} />
+		<meta property="og:description" content={text.ogDescription} />
+		<meta property="og:type" content="website" />
+		<link rel="alternate" hreflang="en" href="/" />
+		<link rel="alternate" hreflang="ja" href="/ja/" />
+		<link rel="icon" type="image/png" href={enbuLogo.src} />
+		<title>{text.title}</title>
+		<script is:inline>
+			(() => {
+				if (document.documentElement.lang !== 'en' || location.pathname !== '/') return;
+				const savedLocale = localStorage.getItem('enbu-locale');
+				const prefersJapanese = navigator.languages?.some((language) => language.toLowerCase().startsWith('ja'));
+				if (savedLocale === 'ja' || (!savedLocale && prefersJapanese)) {
+					location.replace(`/ja/${location.search}${location.hash}`);
+				}
+			})();
+		</script>
+	</head>
+	<body>
+		<header class="site-header">
+			<nav class="nav shell" aria-label={text.navLabel}>
+				<a class="brand" href={isJapanese ? '/ja/' : '/'} aria-label="enbu home">
+					<Image class="brand-logo" src={enbuLogo} alt="" width={36} height={36} />
+					<span>enbu</span>
+				</a>
+				<div class="nav-links">
+					<a href="/docs/">{text.docs}</a>
+					<a class="github-link" href={repositoryUrl} target="_blank" rel="noreferrer">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.82a9.6 9.6 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+						<span>GitHub</span>
+					</a>
+				</div>
+				<div class="language-control">
+					<button
+						id="language-menu-toggle"
+						class="language-toggle"
+						type="button"
+						aria-label={isJapanese ? '言語を選択' : 'Choose language'}
+						aria-haspopup="menu"
+						aria-expanded="false"
+						aria-controls="language-menu"
+					>
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h12M9 3v2m4 0c-1 5-4 8-8 10m2-6c2 3 4 5 7 6m3-4 4 10m0-10-4 10m1-3h6" /></svg>
+						<span>{currentLanguage.label}</span>
+						<svg class="language-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
+					</button>
+					<div id="language-menu" class="language-menu" role="menu" hidden>
+						{languages.map((language) => (
+							<a
+								role="menuitem"
+								data-locale={language.locale}
+								href={language.href}
+								aria-current={language.locale === locale ? 'page' : undefined}
+							>
+								<span>{language.label}</span>
+								{language.locale === locale && <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8 3 3 7-7" /></svg>}
+							</a>
+						))}
+					</div>
+				</div>
+			</nav>
+		</header>
+
+		<main>
+			<section class="hero shell">
+				<div class="hero-copy">
+					{
+						isJapanese ? (
+							<h1><span class="headline-line"><code>.env</code>を共有する。</span><br /><span class="headline-line">秘密は共有しない。</span></h1>
+						) : (
+							<h1>Share your <code>.env</code>.<br />Not your secrets.</h1>
+						)
+					}
+					<p class="hero-summary">{text.heroSummary}</p>
+					<div class="hero-actions">
+						<div id="download" class="download-control" data-release-api={releaseApiUrl}>
+							<a
+								id="primary-download"
+								class="primary-button"
+								href={releaseUrl}
+								data-label-macos={text.downloadMacos}
+								data-label-windows={text.downloadWindows}
+								data-label-linux={text.downloadLinux}
+								data-label-mobile={text.mobileDownload}
+							>
+								<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14" /></svg>
+								<span id="download-label">{text.chooseDownload}</span>
+							</a>
+							<button
+								id="download-menu-toggle"
+								class="download-toggle"
+								type="button"
+								aria-label={text.chooseDownload}
+								aria-haspopup="menu"
+								aria-expanded="false"
+								aria-controls="download-menu"
+							>
+								<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9h12l-6 7Z" /></svg>
+							</button>
+							<div id="download-menu" class="download-menu" role="menu" hidden>
+								{downloads.map((download) => (
+									<a role="menuitem" href={releaseUrl} data-download={download.id}>
+										<span><strong>{download.name}</strong><small>{download.detail}</small></span>
+										<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0 5-5m-5 5-5-5M5 20h14" /></svg>
+									</a>
+								))}
+								<a class="all-assets" role="menuitem" href={releaseUrl} target="_blank" rel="noreferrer">{text.allAssets}</a>
+							</div>
+						</div>
+					</div>
+					<p id="download-detail" class="download-detail" aria-live="polite">{text.downloadDetail}</p>
+				</div>
+
+				<div class="product-stage" aria-label={text.previewLabel}>
+					<div class="glow glow-one"></div>
+					<div class="glow glow-two"></div>
+					<Image class="dancer" src={enbuLogo} alt="" width={188} height={188} />
+					<div class="app-window">
+						<div class="window-bar">
+							<div class="window-controls" aria-hidden="true"><i></i><i></i><i></i></div>
+							<span>enbu · acme/web-app</span>
+							<span class="window-status"><i></i> Synced</span>
+						</div>
+						<div class="app-body">
+							<aside class="app-sidebar">
+								<span class="eyebrow">REPOSITORY</span>
+								<strong>acme/web-app</strong>
+								<span class="eyebrow environment-label">ENVIRONMENTS</span>
+								<span class="environment"><i></i> development</span>
+								<span class="environment active"><i></i> production</span>
+							</aside>
+							<div class="secrets-panel">
+								<div class="panel-heading">
+									<div><span class="eyebrow">PRODUCTION</span><h2>Secrets</h2></div>
+									<button type="button" tabindex="-1">+ Add secret</button>
+								</div>
+								<div class="secret-row"><span>API_BASE_URL</span><code>••••••••••••</code><b>Encrypted</b></div>
+								<div class="secret-row"><span>DATABASE_URL</span><code>••••••••••••</code><b>Encrypted</b></div>
+								<div class="secret-row"><span>STRIPE_SECRET_KEY</span><code>••••••••••••</code><b>Encrypted</b></div>
+								<div class="terminal-card">
+									<div class="terminal-title"><span></span><span></span><span></span><b>Terminal</b></div>
+									<code><em>$</em> enbu pull --env production<br /><span>✓ 3 secrets written to .env.production</span></code>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section id="security" class="features shell">
+				<div class="section-intro">
+					<p class="kicker">{text.securityKicker}</p>
+					<h2>{text.securityTitle}</h2>
+					<p>{text.securitySummary}</p>
+				</div>
+				<div class="feature-grid">
+					{text.features.map(([title, description], index) => (
+						<article>
+							<div class="feature-icon">
+								{index === 0 && <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.4 8 8 9 4.6-1 8-4 8-9V7l-8-4Zm-3 9 2 2 4-5" /></svg>}
+								{index === 1 && <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.2-4-2-5-2.5m10 5v-3.1c0-.9.3-1.5.8-2-2.7-.3-5.5-1.3-5.5-6a4.7 4.7 0 0 1 1.3-3.3 4.3 4.3 0 0 1 .1-3.3s1-.3 3.3 1.3a11.4 11.4 0 0 1 6 0c2.3-1.6 3.3-1.3 3.3-1.3a4.3 4.3 0 0 1 .1 3.3 4.7 4.7 0 0 1 1.3 3.3c0 4.7-2.8 5.7-5.5 6 .5.5.8 1.3.8 2.4V22" transform="translate(-5)" /></svg>}
+								{index === 2 && <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3m-11 0h12v10H6V11Zm6 4v2" /></svg>}
+							</div>
+							<h3>{title}</h3>
+							<p>{description}</p>
+						</article>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer>
+			<div class="footer-inner shell">
+				<a class="brand" href={isJapanese ? '/ja/' : '/'}><Image class="brand-logo" src={enbuLogo} alt="" width={36} height={36} /><span>enbu</span></a>
+				<p>{text.footer}</p>
+				<div class="footer-meta">
+					<span>© 2026 kota</span>
+					<a href={licenseUrl} target="_blank" rel="noreferrer">MIT License</a>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			type GitHubRelease = {
+				tag_name: string;
+				assets: Array<{ name: string; browser_download_url: string }>;
+			};
+
+			type NavigatorUAData = {
+				platform?: string;
+				getHighEntropyValues?: (hints: string[]) => Promise<{ architecture?: string }>;
+			};
+
+			const button = document.querySelector<HTMLAnchorElement>('#primary-download');
+			const label = document.querySelector<HTMLElement>('#download-label');
+			const detail = document.querySelector<HTMLElement>('#download-detail');
+			const toggle = document.querySelector<HTMLButtonElement>('#download-menu-toggle');
+			const menu = document.querySelector<HTMLElement>('#download-menu');
+			const downloadControl = document.querySelector<HTMLElement>('.download-control');
+			const languageToggle = document.querySelector<HTMLButtonElement>('#language-menu-toggle');
+			const languageMenu = document.querySelector<HTMLElement>('#language-menu');
+			const languageControl = document.querySelector<HTMLElement>('.language-control');
+			const releaseApi = downloadControl?.dataset.releaseApi;
+			const uaData = (navigator as Navigator & { userAgentData?: NavigatorUAData }).userAgentData;
+			const assetPatterns: Record<string, RegExp> = {
+				macos: /_darwin_arm64\.dmg$/i,
+				'windows-amd64': /_windows_amd64\.exe$/i,
+				'windows-arm64': /_windows_arm64\.exe$/i,
+				'linux-amd64': /_linux_amd64\.tar\.gz$/i,
+				'linux-arm64': /_linux_arm64\.tar\.gz$/i,
+			};
+
+			function setMenu(open: boolean) {
+				if (!toggle || !menu) return;
+				toggle.setAttribute('aria-expanded', String(open));
+				menu.hidden = !open;
+			}
+
+			function setLanguageMenu(open: boolean) {
+				if (!languageToggle || !languageMenu) return;
+				languageToggle.setAttribute('aria-expanded', String(open));
+				languageMenu.hidden = !open;
+			}
+
+			toggle?.addEventListener('click', (event) => {
+				event.stopPropagation();
+				setMenu(toggle.getAttribute('aria-expanded') !== 'true');
+			});
+
+			languageToggle?.addEventListener('click', (event) => {
+				event.stopPropagation();
+				setLanguageMenu(languageToggle.getAttribute('aria-expanded') !== 'true');
+			});
+
+			document.addEventListener('click', (event) => {
+				if (!downloadControl?.contains(event.target as Node)) setMenu(false);
+				if (!languageControl?.contains(event.target as Node)) setLanguageMenu(false);
+			});
+
+			document.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape') {
+					setMenu(false);
+					setLanguageMenu(false);
+				}
+			});
+
+			document.querySelectorAll<HTMLAnchorElement>('[data-locale]').forEach((link) => {
+				link.addEventListener('click', () => localStorage.setItem('enbu-locale', link.dataset.locale || 'en'));
+			});
+
+			async function getLatestRelease() {
+				if (!releaseApi) return;
+
+				try {
+					const response = await fetch(releaseApi, {
+						headers: { Accept: 'application/vnd.github+json' },
+					});
+					if (!response.ok) return;
+
+					const release = (await response.json()) as GitHubRelease;
+					const urls = new Map<string, string>();
+					for (const [id, pattern] of Object.entries(assetPatterns)) {
+						const asset = release.assets.find((candidate) => pattern.test(candidate.name));
+						if (asset) urls.set(id, asset.browser_download_url);
+					}
+
+					document.querySelectorAll<HTMLAnchorElement>('[data-download]').forEach((link) => {
+						const url = urls.get(link.dataset.download || '');
+						if (url) link.href = url;
+					});
+
+					return { tag: release.tag_name, urls };
+				} catch {
+					// The latest release page remains available when GitHub's API cannot be reached.
+				}
+			}
+
+			async function selectDownload() {
+				if (!button || !label || !detail) return;
+				const releasePromise = getLatestRelease();
+
+				const platform = (uaData?.platform || navigator.platform || navigator.userAgent).toLowerCase();
+				const userAgent = navigator.userAgent.toLowerCase();
+				let architecture = '';
+
+				try {
+					architecture = (await uaData?.getHighEntropyValues?.(['architecture']))?.architecture?.toLowerCase() || '';
+				} catch {
+					// Browsers may decline high-entropy client hints. x64 remains the desktop default.
+				}
+
+				const isArm = /arm|aarch64/.test(`${architecture} ${userAgent}`);
+				let targetId = '';
+				let targetLabel = '';
+				let targetDetail = '';
+
+				if (/iphone|ipad|android/.test(userAgent)) {
+					label.textContent = button.dataset.labelMobile || label.textContent;
+					return;
+				}
+
+				if (platform.includes('mac')) {
+					targetId = 'macos';
+					targetLabel = button.dataset.labelMacos || '';
+					targetDetail = 'Apple silicon · DMG';
+				} else if (platform.includes('win')) {
+					targetId = isArm ? 'windows-arm64' : 'windows-amd64';
+					targetLabel = button.dataset.labelWindows || '';
+					targetDetail = `${isArm ? 'Arm64' : 'x64'} · EXE`;
+				} else if (platform.includes('linux')) {
+					targetId = isArm ? 'linux-arm64' : 'linux-amd64';
+					targetLabel = button.dataset.labelLinux || '';
+					targetDetail = `${isArm ? 'Arm64' : 'x64'} · tar.gz`;
+				}
+
+				if (!targetId) return;
+				label.textContent = targetLabel;
+				detail.textContent = targetDetail;
+
+				const release = await releasePromise;
+				const target = release?.urls.get(targetId);
+				if (!target) return;
+				button.href = target;
+				detail.textContent = `${targetDetail} · ${release.tag}`;
+			}
+
+			void selectDownload();
+		</script>
+	</body>
+</html>
