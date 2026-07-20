@@ -1,9 +1,11 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import starlightLlmsTxt from "starlight-llms-txt";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://enbu.net",
   integrations: [
     starlight({
       title: "enbu",
@@ -14,6 +16,7 @@ export default defineConfig({
           items: [{ autogenerate: { directory: "docs" } }],
         },
       ],
+      plugins: [starlightLlmsTxt()],
     }),
   ],
 });
