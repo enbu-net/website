@@ -3,15 +3,8 @@
 	"name": "website",
 	"account_id": "cde3f3b62fe75411311327f17ead7604",
 	"compatibility_date": "2026-07-17",
-	"workers_dev": false,
+	"workers_dev": true,
 	"preview_urls": false,
-	"routes": [
-		{
-			"pattern": "enbu.net",
-			"zone_name": "enbu.net",
-			"custom_domain": true
-		}
-	],
 	"assets": {
 		"directory": "./dist",
 		"not_found_handling": "404-page"
