@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@astrojs/starlight':
         specifier: ^0.42.0
-        version: 0.42.2(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)
+        version: 0.42.3(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)
       astro:
         specifier: ^7.0.2
         version: 7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3)
@@ -19,13 +19,13 @@ importers:
         version: 0.35.4(@types/node@24.13.3)
       starlight-copy-button:
         specifier: github:dionysuzx/starlight-copy-button
-        version: https://codeload.github.com/dionysuzx/starlight-copy-button/tar.gz/d570fcab6824127f80076eb419f39fb4fbd9de09(@astrojs/starlight@0.42.2(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2))(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))
+        version: https://codeload.github.com/dionysuzx/starlight-copy-button/tar.gz/d570fcab6824127f80076eb419f39fb4fbd9de09(@astrojs/starlight@0.42.3(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2))(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))
       starlight-dot-md:
         specifier: ^0.2.1
         version: 0.2.1(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))
       starlight-llms-txt:
         specifier: ^0.12.0
-        version: 0.12.0(@astrojs/markdown-satteri@0.4.1)(@astrojs/starlight@0.42.2(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2))(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)
+        version: 0.12.0(@astrojs/markdown-satteri@0.4.1)(@astrojs/starlight@0.42.3(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2))(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)
     devDependencies:
       wrangler:
         specifier: 4.135.0
@@ -122,8 +122,8 @@ packages:
   '@astrojs/sitemap@3.7.3':
     resolution: {integrity: sha512-f8euLVsyeAmAkSm/1M2Kb8sL8byQmfgbvBNaHFItCheTj/IpiJYSEWVcqDHZ/yEHxiS7+w87mQkzwZaPHmk5GA==}
 
-  '@astrojs/starlight@0.42.2':
-    resolution: {integrity: sha512-rDAgv3QCJOo0F4EoWeuFG31OdhQOrcipATl9+gCkOqpQiO7u7FR8uVam+HHNJO8Sl21TOAQKUSUEvCXv8jEgJA==}
+  '@astrojs/starlight@0.42.3':
+    resolution: {integrity: sha512-eX0KI2jeNWkI42pJNA2YpStfdNZ/NRBp6H9/Ui/zmu7qJ66yHV4qdgW8SfsCNt2QMUMgvm8auUNOsE4aD68RUQ==}
     peerDependencies:
       '@astrojs/markdown-remark': ^7.3.0
       astro: ^7.2.10
@@ -2260,7 +2260,7 @@ snapshots:
       stream-replace-string: 2.0.0
       zod: 4.5.4
 
-  '@astrojs/starlight@0.42.2(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)':
+  '@astrojs/starlight@0.42.3(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)':
     dependencies:
       '@astrojs/markdown-satteri': 0.4.1
       '@astrojs/mdx': 8.0.1(@astrojs/markdown-satteri@0.4.1)(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))
@@ -4161,9 +4161,9 @@ snapshots:
 
   space-separated-tokens@2.0.2: {}
 
-  starlight-copy-button@https://codeload.github.com/dionysuzx/starlight-copy-button/tar.gz/d570fcab6824127f80076eb419f39fb4fbd9de09(@astrojs/starlight@0.42.2(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2))(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3)):
+  starlight-copy-button@https://codeload.github.com/dionysuzx/starlight-copy-button/tar.gz/d570fcab6824127f80076eb419f39fb4fbd9de09(@astrojs/starlight@0.42.3(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2))(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3)):
     dependencies:
-      '@astrojs/starlight': 0.42.2(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)
+      '@astrojs/starlight': 0.42.3(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)
       astro: 7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3)
       turndown: 7.2.4
       turndown-plugin-gfm: 1.0.2
@@ -4174,10 +4174,10 @@ snapshots:
       picomatch: 4.0.4
       yaml: 2.8.3
 
-  starlight-llms-txt@0.12.0(@astrojs/markdown-satteri@0.4.1)(@astrojs/starlight@0.42.2(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2))(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2):
+  starlight-llms-txt@0.12.0(@astrojs/markdown-satteri@0.4.1)(@astrojs/starlight@0.42.3(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2))(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2):
     dependencies:
       '@astrojs/mdx': 8.0.1(@astrojs/markdown-satteri@0.4.1)(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))
-      '@astrojs/starlight': 0.42.2(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)
+      '@astrojs/starlight': 0.42.3(astro@7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3))(supports-color@10.2.2)
       '@types/hast': 3.0.5
       '@types/micromatch': 4.0.10
       astro: 7.3.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(yaml@2.8.3)
