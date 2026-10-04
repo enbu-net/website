@@ -14,6 +14,11 @@
   "platformAutomerge": true,
   "packageRules": [
     {
+      "description": "Lock file maintenance - skip minimum release age",
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "minimumReleaseAge": null
+    },
+    {
       "matchPackageNames": ["aquaproj/aqua-registry"],
       "extends": ["schedule:earlyMondays"]
     },
