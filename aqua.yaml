@@ -3,4 +3,4 @@ registries:
     ref: v4.575.0 # renovate: depName=aquaproj/aqua-registry
 
 packages:
-  - name: pnpm/pnpm@v10.34.7
+  - name: pnpm/pnpm@v12.14.0
