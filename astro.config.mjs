@@ -11,7 +11,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "enbu",
-      social: [{ icon: "github", label: "GitHub", href: "https://github.com/yashikota/enbu" }],
+      social: [{ icon: "github", label: "GitHub", href: "https://github.com/enbu-net/enbu" }],
       sidebar: [
         {
           label: "Documentation",
