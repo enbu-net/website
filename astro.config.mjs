@@ -11,10 +11,17 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "enbu",
+      // English at the root, Japanese under /ja/, as the landing pages are.
+      defaultLocale: "root",
+      locales: {
+        root: { label: "English", lang: "en" },
+        ja: { label: "日本語", lang: "ja" },
+      },
       social: [{ icon: "github", label: "GitHub", href: "https://github.com/enbu-net/enbu" }],
       sidebar: [
         {
           label: "Documentation",
+          translations: { ja: "ドキュメント" },
           items: [{ autogenerate: { directory: "docs" } }],
         },
       ],

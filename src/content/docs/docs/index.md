@@ -32,15 +32,19 @@ go install github.com/enbu-net/enbu@latest
 
 ## Set up a workspace
 
-For GHCR, authenticate with GitHub, then initialize enbu inside a repository with the registry to use:
+enbu works inside a Git repository on GitHub. If your project is not on GitHub yet, see [Put your project on GitHub](/docs/put-your-project-on-github/).
+
+In a repository whose `origin` is on GitHub, sign in and run `init`. The workspace is stored on GHCR beside the repository, at `oci://ghcr.io/OWNER/REPO-enbu`:
 
 ```shell
 enbu auth login
 cd your-repository
-enbu init --storage oci://ghcr.io/your-org/your-repo-enbu --oci-auth github
+enbu init
 ```
 
-Other OCI registries use your Docker credentials, and S3 uses the AWS SDK's default credential chain:
+GHCR creates the package private to you. Teammates leave their join request in the package, so they need write access to it: open the package's settings on GitHub, connect the repository and turn on "Inherit access from repository", which gives the repository's collaborators with write access the same access to the package. `init` prints this reminder.
+
+Anywhere else, name the storage with `--storage`. Other OCI registries use your Docker credentials, and S3 uses the AWS SDK's default credential chain:
 
 ```shell
 enbu init --storage oci://registry.example.com/team/secrets
