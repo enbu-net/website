@@ -42,7 +42,7 @@ cd your-repository
 enbu init
 ```
 
-GHCR creates the package private to you. So that teammates can join, open the package's settings on GitHub, connect the repository and turn on "Inherit access from repository"; `init` prints this reminder.
+GHCR creates the package private to you. Teammates leave their join request in the package, so they need write access to it: open the package's settings on GitHub, connect the repository and turn on "Inherit access from repository", which gives the repository's collaborators with write access the same access to the package. `init` prints this reminder.
 
 Anywhere else, name the storage with `--storage`. Other OCI registries use your Docker credentials, and S3 uses the AWS SDK's default credential chain:
 

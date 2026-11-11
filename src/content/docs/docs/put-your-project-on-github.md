@@ -12,6 +12,7 @@ If enbu says that your folder is not a Git repository, or is not on GitHub yet, 
 :::caution[Keep your secrets out of Git]
 Publishing puts the files in the folder on GitHub. Before you publish, make sure `.env` and other files with secrets are left out:
 create a file named `.gitignore` in the folder with a line `.env`, or leave those files out when the tool asks which files to include.
+`.gitignore` only keeps files that Git does not track yet out of commits. In a folder that was already a Git repository, check that no earlier commit holds `.env`: publishing would put that history on GitHub too. If one does, treat those secrets as exposed and change them.
 :::
 
 ## GitHub Desktop
@@ -21,7 +22,7 @@ create a file named `.gitignore` in the folder with a line `.env`, or leave thos
 3. GitHub Desktop says the folder does not appear to be a Git repository. Click **create a repository**, keep the name, and click **Create repository**.
 4. Click **Publish repository**. Leave **Keep this code private** checked unless the project is meant to be public, and click **Publish repository**.
 
-If the folder is already a Git repository that is not on GitHub, skip step 3.
+If the folder is already a Git repository without a remote, skip step 3. If its `origin` remote points somewhere other than GitHub, use the terminal steps below instead.
 
 ## VS Code
 
@@ -31,7 +32,7 @@ If the folder is already a Git repository that is not on GitHub, skip step 3.
 4. Choose a private repository unless the project is meant to be public.
 5. VS Code lists the files to include. Uncheck `.env` and any other file with secrets, then confirm.
 
-If the folder is already a Git repository that is not on GitHub, click **Publish Branch** in the Source Control view instead.
+If the folder is already a Git repository without a remote, click **Publish Branch** in the Source Control view instead. If its `origin` remote points somewhere other than GitHub, **Publish Branch** pushes there, so use the terminal steps below.
 
 ## Terminal
 
@@ -40,6 +41,12 @@ Create an empty repository on [GitHub](https://github.com/new) first, then run t
 ```sh
 git init
 git remote add origin https://github.com/OWNER/REPO.git
+```
+
+If the folder already has an `origin` remote (`git remote -v` lists it), point it at the GitHub repository instead of adding one:
+
+```sh
+git remote set-url origin https://github.com/OWNER/REPO.git
 ```
 
 enbu needs only the Git repository and its `origin` remote; you can commit and push later.
