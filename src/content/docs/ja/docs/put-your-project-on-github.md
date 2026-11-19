@@ -1,9 +1,9 @@
 ---
 title: プロジェクトを GitHub に公開する
-description: enbu は GitHub 上の Git リポジトリの中で使います。GitHub Desktop、VS Code、ターミナルでフォルダを公開する方法です。
+description: GitHub Desktop、VS Code、ターミナルを使って、チームで共有するリポジトリを GitHub に作ります。
 ---
 
-enbu は、チームで共有している GitHub 上の Git リポジトリの中で使います。
+チームで GitHub を使っている場合は、リポジトリを通じて enbu の設定を共有できます。
 enbu の設定は、そのリポジトリの `enbu.toml` というファイルに置かれ、チームメイトはリポジトリを pull するとこのファイルを受け取ります。
 リポジトリが GitHub にあれば、enbu は暗号化したシークレットの置き場所として、その隣の GitHub Container Registry (GHCR) も提案します。
 
@@ -49,7 +49,7 @@ git remote add origin https://github.com/OWNER/REPO.git
 git remote set-url origin https://github.com/OWNER/REPO.git
 ```
 
-enbu に必要なのは、Git リポジトリとその `origin` リモートだけです。コミットや push はあとで構いません。
+enbu がリポジトリ名から GHCR の保存先を提案するには、GitHub を指す `origin` リモートを設定します。コミットや push はあとで構いません。
 
 ## 次に
 
