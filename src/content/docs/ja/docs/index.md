@@ -9,11 +9,11 @@ enbu をインストールして、手元の `.env` を共有できる状態に�
 すでにチームから `enbu.toml` を受け取っている場合は、インストール後に[チームへの参加手順](/ja/docs/team/#ワークスペースに参加する)へ進んでください。
 
 <figure class="docs-flow">
-<ol lang="en">
-<li><strong>Install</strong><span>CLI</span></li>
-<li><strong>Set up</strong><span>enbu init</span></li>
-<li><strong>Import</strong><span>enbu import .env</span></li>
-<li><strong>Sync</strong><span>enbu pull</span></li>
+<ol>
+<li><strong>インストール</strong><span>CLI</span></li>
+<li><strong>初期化</strong><span>enbu init</span></li>
+<li><strong>取り込み</strong><span>enbu import .env</span></li>
+<li><strong>同期</strong><span>enbu pull</span></li>
 </ol>
 <figcaption>CLI で初めて使う場合は、インストールから始めて手元の .env を同期します。</figcaption>
 </figure>

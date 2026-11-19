@@ -24,10 +24,10 @@ GHCR で作られた非公開パッケージには、初期状態では作成者
 4. 承認が完了すると、参加した端末でも各環境の現在のシークレットを復号できます。参加したメンバーは `enbu pull` を実行します。
 
 <figure class="docs-flow">
-<ol lang="en">
-<li><strong>New device</strong><span>Request</span></li>
-<li><strong>Admin</strong><span>Verify + approve</span></li>
-<li><strong>New device</strong><span>Pull</span></li>
+<ol>
+<li><strong>参加する端末</strong><span>参加を申請</span></li>
+<li><strong>管理者</strong><span>照合して承認</span></li>
+<li><strong>承認された端末</strong><span>値を取得</span></li>
 </ol>
 <figcaption>フィンガープリントは参加要求とは別の経路で照合します。承認が済むと新しい端末で復号できます。</figcaption>
 </figure>

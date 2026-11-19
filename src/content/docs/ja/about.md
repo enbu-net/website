@@ -15,10 +15,10 @@ enbu は、API キーやデータベースのパスワードを端末で暗号�
 4. **アプリケーションから使う。** `enbu pull` で `.env` に書き出すか、`enbu run` で起動するプロセスに直接渡します。
 
 <figure class="docs-flow">
-<ol lang="en">
-<li><strong>Device A</strong><span>Encrypt + sign</span></li>
-<li><strong>OCI / S3</strong><span>Store ciphertext</span></li>
-<li><strong>Device B</strong><span>Verify + decrypt</span></li>
+<ol>
+<li><strong>送信側の端末</strong><span>暗号化と署名</span></li>
+<li><strong>OCI / S3</strong><span>暗号文を保存</span></li>
+<li><strong>受信側の端末</strong><span>検証と復号</span></li>
 </ol>
 <figcaption>登録した値は端末で暗号化され、保存先を経由して承認済みの端末に届きます。</figcaption>
 </figure>

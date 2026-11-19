@@ -43,11 +43,11 @@ enbu storage migrate s3://your-bucket/team/workspace --region ap-northeast-1 --w
 ```
 
 <figure class="docs-flow">
-<ol lang="en">
-<li><strong>Pause writes</strong><span>Source</span></li>
-<li><strong>Copy + verify</strong><span>Destination</span></li>
-<li><strong>Share config</strong><span>enbu.toml</span></li>
-<li><strong>Resume writes</strong><span>Destination</span></li>
+<ol>
+<li><strong>書き込みを停止</strong><span>移行元</span></li>
+<li><strong>コピーと検証</strong><span>移行先</span></li>
+<li><strong>設定を共有</strong><span>enbu.toml</span></li>
+<li><strong>書き込みを再開</strong><span>移行先</span></li>
 </ol>
 <figcaption>移行中は全員が書き込みを止めます。移行先を読み戻して検証してから、チームの設定を切り替えます。</figcaption>
 </figure>
