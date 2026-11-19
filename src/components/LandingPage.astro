@@ -72,13 +72,13 @@ const translations = {
 		footer: 'GitHub-native, end-to-end encrypted environment management.',
 	},
 	ja: {
-		description: 'チームの.envシークレットをエンドツーエンド暗号化し、GitHubだけで安全に管理します。',
-		ogTitle: 'enbu — GitHubで安全に.envを管理',
-		ogDescription: '開発チーム向けのGitHubネイティブなエンドツーエンド暗号化.envマネージャー。',
-		title: 'enbu — GitHubネイティブな.env管理',
+		description: 'チームの .env を端末で暗号化し、既存の OCI レジストリや S3 互換ストレージで共有します。',
+		ogTitle: 'enbu | .env を暗号化して共有',
+		ogDescription: '開発チームのためのオープンソースの .env 管理ツール。',
+		title: 'enbu | .env を暗号化して共有',
 		navLabel: 'メインナビゲーション',
-		docs: 'ドキュメント',
-		heroSummary: 'enbuはチームのシークレットをエンドツーエンド暗号化し、いつものGitHubワークフローで安全に受け渡します。',
+		docs: 'はじめる',
+		heroSummary: 'API キーやパスワードを端末で暗号化し、チームで共有します。保存先は GitHub Container Registry、ほかの OCI レジストリ、S3 互換ストレージから選べます。',
 		chooseDownload: 'ダウンロードを選択',
 		downloadMacos: 'macOS版をダウンロード',
 		downloadWindows: 'Windows版をダウンロード',
@@ -89,13 +89,12 @@ const translations = {
 		previewLabel: 'enbuデスクトップアプリのプレビュー',
 		securityKicker: '最初から安全に',
 		securityTitle: 'シークレットはチームの中だけに。',
-		securitySummary: 'enbuはGitHubを共有基盤として利用しますが、平文の値をGitHubへ渡しません。',
+		securitySummary: '暗号化と復号は端末で行います。保存先には暗号文と署名付きの履歴を保存します。',
 		features: [
 			['エンドツーエンド暗号化', 'シークレットを復号できるのは、各メンバーがローカルに持つ秘密鍵だけです。'],
-			['GitHubネイティブ', '専用サービスの契約や、別のチームアカウントを運用する必要はありません。'],
-			['OSの安全な領域に保存', '秘密鍵はmacOS Keychain、Secret Service、Windows Credential Managerに保存します。'],
+			['既存のストレージを利用', 'チームが使っている OCI レジストリや S3 互換ストレージに保存できます。'],
+			['端末ごとに秘密鍵を保管', 'TPM や Secure Enclave が利用できる場合はハードウェアで保護し、利用できない場合は OS keyring を使います。'],
 		],
-		footer: 'GitHubネイティブなエンドツーエンド暗号化環境管理。',
 	},
 } as const;
 
@@ -140,6 +139,7 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 					<span>enbu</span>
 				</a>
 				<div class="nav-links">
+					{isJapanese && <a href="/ja/about/">enbu とは</a>}
 					<a href={isJapanese ? '/ja/docs/' : '/docs/'}>{text.docs}</a>
 					<a class="github-link" href={repositoryUrl} target="_blank" rel="noreferrer">
 						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.82a9.6 9.6 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
@@ -182,7 +182,7 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 				<div class="hero-copy">
 					{
 						isJapanese ? (
-							<h1><span class="headline-line"><code>.env</code>を共有する。</span><br /><span class="headline-line">秘密は共有しない。</span></h1>
+							<h1><span class="headline-line"><code>.env</code> を暗号化して</span><br /><span class="headline-line">チームで共有する。</span></h1>
 						) : (
 							<h1>Share your <code>.env</code>.<br />Not your secrets.</h1>
 						)
@@ -288,7 +288,9 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 		<footer>
 			<div class="footer-inner shell">
 				<a class="brand" href={isJapanese ? '/ja/' : '/'}><Image class="brand-logo" src={enbuLogo} alt="" width={36} height={36} /><span>enbu</span></a>
-				<p>{text.footer}</p>
+				<p>
+					{isJapanese ? <><a href="/ja/about/">enbu とは</a> · <a href="/ja/docs/">はじめる</a></> : translations.en.footer}
+				</p>
 				<div class="footer-meta">
 					<span>© 2026 kota</span>
 					<a href={licenseUrl} target="_blank" rel="noreferrer">MIT License</a>
