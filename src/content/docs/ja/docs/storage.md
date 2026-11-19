@@ -1,0 +1,74 @@
+---
+title: ストレージと移行
+description: OCI や S3 互換ストレージを選び、ワークスペースの保存先を移行します。
+sidebar:
+  order: 5
+---
+
+## 保存先を選ぶ
+
+enbu は暗号文、署名付き履歴、参加要求を OCI レジストリまたは S3 互換のオブジェクトストレージに保存します。
+GHCR を使う場合は、[はじめる](/ja/docs/#ワークスペースを作る)の手順で初期化できます。
+
+ほかの OCI レジストリには Docker の認証情報を、S3 には AWS SDK の認証情報チェーンを使います。
+S3 のバケットは先に作成してください。
+S3 互換サービスに接続する場合は、必要に応じて `--endpoint` と `--path-style` を指定します。
+
+```sh
+enbu init --storage oci://registry.example.com/team/secrets
+enbu init --storage s3://your-bucket/team/workspace --region ap-northeast-1
+```
+
+保存先からは、公開鍵や署名付きのメンバー情報、変更の回数、暗号文のサイズなども確認できます。
+管理者にはデータの削除や取得を妨げる能力があるため、バックアップや可用性は保存先の運用として計画してください。
+
+| 保存先 | 認証に使うもの | 事前に用意するもの |
+| --- | --- | --- |
+| GHCR | GitHub のログインまたは `GITHUB_TOKEN` | GHCR にパッケージを作成できる権限 |
+| ほかの OCI レジストリ | Docker の認証情報 | レジストリへの読み書き権限 |
+| S3 互換ストレージ | AWS SDK が読み取る認証情報 | バケットと対象パスへの読み書き権限 |
+
+## 保存先を変更する
+
+1. 空の移行先を用意し、チーム全員が元の保存先への書き込みを止めます。
+2. 管理者が `enbu storage migrate` を実行します。enbu は暗号文と署名付き履歴などを検証してコピーし、移行先から読み戻したあとで `enbu.toml` を更新します。
+3. 更新した `enbu.toml` をチームに共有します。各端末で移行先を読み取れることを確認して、書き込みを再開します。
+
+デスクトップアプリでは、設定画面のワークスペースの保存先から移行できます。
+CLI で S3 に移行するときは、次のように指定します。
+バケット、保存先のパス、リージョンを移行先に合わせて変更してください。
+
+```sh
+enbu storage migrate s3://your-bucket/team/workspace --region ap-northeast-1 --writes-paused
+```
+
+<figure class="docs-flow">
+<ol lang="en">
+<li><strong>Pause writes</strong><span>Source</span></li>
+<li><strong>Copy + verify</strong><span>Destination</span></li>
+<li><strong>Share config</strong><span>enbu.toml</span></li>
+<li><strong>Resume writes</strong><span>Destination</span></li>
+</ol>
+<figcaption>移行中は全員が書き込みを止めます。移行先を読み戻して検証してから、チームの設定を切り替えます。</figcaption>
+</figure>
+
+## 参考資料
+
+- [ストレージの技術資料](https://github.com/enbu-net/enbu/blob/main/docs/storage.md)
+
+## FAQ
+
+### 移行のためにシークレットの復号は必要ですか？
+
+移行では保管済みの暗号文をコピーします。
+各シークレットを復号する必要はありません。
+
+### 移行の途中で失敗した場合はどうなりますか？
+
+設定を切り替える前に失敗した場合、`enbu.toml` は元の保存先を指したままです。
+再試行時には、途中までコピーしたオブジェクトを再利用できます。
+
+### 保存先から消えたデータは復元できますか？
+
+復元には、保存先のバックアップなど別に保管したデータが必要です。
+ローカルに残る検証用の情報は、以前に確認した状態の消失を検出するために使います。

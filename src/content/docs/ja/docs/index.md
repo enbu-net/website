@@ -1,16 +1,28 @@
 ---
-title: enbu ドキュメント
-description: エンドツーエンド暗号化で環境変数を管理する enbu の使い始め方。
+title: はじめる
+description: enbu をインストールし、ワークスペースの作成から最初の .env の同期まで試します。
+sidebar:
+  order: 1
 ---
 
-enbu は、エンドツーエンド暗号化された `.env` マネージャーです。
-シークレットをチームメンバーのデバイスごとに暗号化し、選んだストレージには暗号文だけを保存します。ストレージには GitHub Container Registry (GHCR)、ほかの OCI レジストリ、S3 互換のオブジェクトストレージを使えます。
+enbu をインストールして、手元の `.env` を共有できる状態にします。
+すでにチームから `enbu.toml` を受け取っている場合は、インストール後に[チームへの参加手順](/ja/docs/team/#ワークスペースに参加する)へ進んでください。
 
-## enbu デスクトップをインストールする
+<figure class="docs-flow">
+<ol lang="en">
+<li><strong>Install</strong><span>CLI</span></li>
+<li><strong>Set up</strong><span>enbu init</span></li>
+<li><strong>Import</strong><span>enbu import .env</span></li>
+<li><strong>Sync</strong><span>enbu pull</span></li>
+</ol>
+<figcaption>CLI で初めて使う場合は、インストールから始めて手元の .env を同期します。</figcaption>
+</figure>
 
-お使いのプラットフォーム用のインストーラーを [enbu のサイト](/ja/#download) か [GitHub Releases](https://github.com/enbu-net/enbu/releases/latest) からダウンロードしてください。
+## インストール
 
-## CLI をインストールする
+デスクトップ版のインストーラーは、[enbu のダウンロードページ](/ja/#download)または [GitHub Releases](https://github.com/enbu-net/enbu/releases/latest) から取得できます。
+
+CLI をインストールする場合は、お使いの OS に合わせて次のコマンドを実行します。
 
 **macOS / Linux**
 
@@ -18,67 +30,66 @@ enbu は、エンドツーエンド暗号化された `.env` マネージャー�
 curl -fsSL https://enbu.net/install.sh | sh
 ```
 
-**Windows (PowerShell)**
+**Windows（PowerShell）**
 
 ```powershell
 irm https://enbu.net/install.ps1 | iex
 ```
 
-Go でもインストールできます。
+Go を使う場合は、次のコマンドで CLI をインストールできます。
 
 ```sh
 go install github.com/enbu-net/enbu@latest
 ```
 
-## ワークスペースを用意する
+## ワークスペースを作る
 
-enbu は GitHub 上の Git リポジトリの中で使います。プロジェクトがまだ GitHub にない場合は、[プロジェクトを GitHub に公開する](/ja/docs/put-your-project-on-github/)を見てください。
+GHCR を使う場合は、プロジェクトのフォルダで GitHub にログインし、`enbu init` を実行します。
+ログイン時は、CLI に表示されたコードをブラウザで承認します。
+認証トークンは OS keyring に保存されます。
 
-`origin` が GitHub にあるリポジトリでは、サインインして `init` を実行します。ワークスペースはリポジトリの隣の GHCR、`oci://ghcr.io/OWNER/REPO-enbu` に置かれます。
-
-```shell
+```sh
 enbu auth login
-cd your-repository
 enbu init
 ```
 
-GHCR はパッケージをあなただけが見られる非公開で作ります。チームメイトは参加リクエストをこのパッケージに書き込むので、パッケージへの書き込み権限が必要です。GitHub でパッケージの設定を開き、リポジトリを接続して「Inherit access from repository」を有効にすると、リポジトリに書き込み権限を持つメンバーがパッケージにも同じ権限を持ちます。`init` もこの案内を表示します。
+`origin` が GitHub を指していれば、enbu はリポジトリ名をもとに GHCR の保存先を提案します。
+GitHub のリモートがなければ、ログイン中のアカウントとフォルダ名をもとに提案します。
 
-GHCR 以外を使うときは `--storage` で指定します。ほかの OCI レジストリは Docker の認証情報を、S3 は AWS SDK のデフォルトの認証チェーンを使います。
+別の保存先を使う場合は、`--storage` を指定します。
+OCI レジストリと S3 の選択は、[ストレージと移行](/ja/docs/storage/)を参照してください。
 
-```shell
-enbu init --storage oci://registry.example.com/team/secrets
-enbu init --storage s3://your-bucket/team/workspace --region ap-northeast-1
-```
+`enbu init` は共有設定を `enbu.toml` に書き出し、最初の端末を管理者として登録します。
 
-`enbu init` は `enbu.toml` を書き出します。これをコミットしてチームに共有してください。最初に `init` を実行したデバイスがワークスペースの管理者になります。
+## .env を取り込んで同期する
 
-## シークレットを追加して取り出す
+既存の `.env` がある場合は、`enbu import` で選択中の環境に登録します。
+`enbu pull` は、保存先から取得したシークレットを復号し、環境の出力ファイルに反映します。
 
-シークレットを追加し、暗号化された環境をローカルの `.env` ファイルに書き出します。
-
-```shell
-enbu add API_KEY "your-secret"
+```sh
+enbu import .env
 enbu pull
 ```
 
-値を省くと (`enbu add API_KEY`)、コマンドラインではなく非表示のプロンプトで入力できます。
-シークレットをディスクに書き出さずに使うには、enbu 経由でコマンドを実行します。
+1 件だけ登録する場合は、たとえば `enbu add API_KEY` を実行し、非表示のプロンプトに値を入力します。
 
-```shell
-enbu run -- npm start
-```
+チームで共有するファイルは `enbu.toml` です。
+復号済みの `.env` は Git の追跡対象から外してください。
+他の端末を追加する手順は、[チームと権限](/ja/docs/team/)を参照してください。
 
-## チームメンバーを追加する
+## FAQ
 
-新しいメンバーは、共有された `enbu.toml` のあるリポジトリで `enbu init` を実行します。
-すると参加リクエストが出て、デバイスのフィンガープリントが表示されます。メンバーはそれをチャットや対面など別の経路で管理者に伝えます。
-管理者はフィンガープリントを照合して、リクエストを承認します。
+### SSH 接続先から GitHub にログインできますか？
 
-```shell
-enbu member approve
-```
+CLI に表示されたコードを別の端末のブラウザで承認できます。
+接続先が Linux の場合は、認証トークンを保存できる OS keyring が必要です。
 
-承認するとすべての環境が再暗号化されるので、新しいメンバーはすぐに `enbu pull` できます。
+### 取り込み先に同じキーがあると、値は上書きされますか？
 
-秘密鍵はデバイスから出ません。TPM 2.0 や Secure Enclave があればそこに、なければ OS の安全な保管場所に置かれます。
+同じキーに異なる値があると、取り込みを中止します。
+取り込む値で置き換える場合は `enbu import .env --overwrite` を使います。
+
+### GitHub アカウントを切り替えられますか？
+
+複数のアカウントを登録し、`enbu auth switch` で切り替えられます。
+`GITHUB_TOKEN` が設定されている場合、GHCR への認証にはそのトークンが優先されます。

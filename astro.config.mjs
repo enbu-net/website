@@ -11,6 +11,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "enbu",
+      customCss: ["./src/styles/docs.css"],
       // English at the root, Japanese under /ja/, as the landing pages are.
       defaultLocale: "root",
       locales: {

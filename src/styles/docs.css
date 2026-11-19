@@ -1,0 +1,60 @@
+.sl-markdown-content .docs-flow {
+  container-type: inline-size;
+  margin-inline: 0;
+}
+
+.sl-markdown-content .docs-flow ol {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sl-markdown-content .docs-flow li {
+  background: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.5rem;
+  margin: 0;
+  overflow-wrap: anywhere;
+  padding: 0.75rem 0.5rem;
+  position: relative;
+  text-align: center;
+}
+
+.sl-markdown-content .docs-flow li + li::before {
+  border-block-start: 1px solid currentColor;
+  border-inline-end: 1px solid currentColor;
+  content: "";
+  height: 0.4rem;
+  inset-block-start: calc(50% - 0.2rem);
+  inset-inline-start: -1rem;
+  position: absolute;
+  transform: rotate(45deg);
+  width: 0.4rem;
+}
+
+.sl-markdown-content .docs-flow li span {
+  display: block;
+  font-size: var(--sl-text-sm);
+}
+
+.sl-markdown-content .docs-flow figcaption {
+  color: var(--sl-color-gray-2);
+  font-size: var(--sl-text-sm);
+  margin-block-start: 0.5rem;
+}
+
+@container (max-width: 28rem) {
+  .sl-markdown-content .docs-flow ol {
+    grid-auto-flow: row;
+  }
+
+  .sl-markdown-content .docs-flow li + li::before {
+    inset-block-start: -1.1rem;
+    inset-inline-start: calc(50% - 0.2rem);
+    transform: rotate(135deg);
+  }
+}
