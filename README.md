@@ -47,3 +47,9 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Check out [the Starlight documentation](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+## Accessibility
+
+Run `pnpm exec playwright install chromium` and `pnpm test:a11y` locally.
+GitHub Actions runs the same suite on pushes and pull requests. It scans the built English and Japanese pages with axe in light and dark themes, checks for page-wide overflow at 320 CSS pixels with and without spacing overrides, and exercises navigation with the keyboard.
+
+When changing layouts or controls, also check text spacing overrides, visible and unobscured keyboard focus, and the reading order and labels in a screen reader. WCAG 2.2 AA conformance requires manual evaluation as well as automated tests.
