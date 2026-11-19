@@ -45,7 +45,6 @@ enbu init
 
 `origin` が GitHub を指していれば、enbu はリポジトリ名をもとに GHCR の保存先を提案します。
 GitHub のリモートがなければ、ログイン中のアカウントとフォルダ名をもとに提案します。
-リポジトリも GitHub で共有する場合は、[プロジェクトを GitHub に公開する](/ja/docs/put-your-project-on-github/)を参照してください。
 
 別の保存先を使う場合は、`--storage` を指定します。
 OCI レジストリと S3 の選択は、[ストレージと移行](/ja/docs/storage/)を参照してください。
