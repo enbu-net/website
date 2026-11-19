@@ -1,3 +1,9 @@
+@media screen and (min-width: 72rem) {
+  [data-has-toc] .main-pane .content-panel {
+    padding-inline-end: calc(var(--sl-content-pad-x) + 0.75rem);
+  }
+}
+
 .sl-markdown-content .docs-flow {
   container-type: inline-size;
   margin-inline: 0;
