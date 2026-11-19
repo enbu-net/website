@@ -14,12 +14,41 @@ enbu は、API キーやデータベースのパスワードを端末で暗号�
 3. **利用する端末を承認する。** 管理者が端末の参加要求を承認すると、その端末の鍵でも現在のシークレットを復号できるようになります。
 4. **アプリケーションから使う。** `enbu pull` で `.env` に書き出すか、`enbu run` で起動するプロセスに直接渡します。
 
+<figure class="docs-flow">
+<ol lang="en">
+<li><strong>Device A</strong><span>Encrypt + sign</span></li>
+<li><strong>OCI / S3</strong><span>Store ciphertext</span></li>
+<li><strong>Device B</strong><span>Verify + decrypt</span></li>
+</ol>
+<figcaption>登録した値は端末で暗号化され、保存先を経由して承認済みの端末に届きます。</figcaption>
+</figure>
+
 ## 保存先と端末の役割
 
 保存先には GitHub Container Registry（GHCR）などの OCI レジストリや、S3 互換のオブジェクトストレージを使います。
 保存先へのアクセスは提供元の認証で管理します。
 シークレットの復号には、承認を受けた端末の秘密鍵が必要です。
 別のメンバーが公開した変更を取り込むときは、enbu が署名と履歴を検証してから復号します。
+
+## 他のツールとの比較
+
+保存するものと、利用時に接続する先を比べると、既存の開発フローに合うツールを選べます。
+
+| ツール | 管理の単位と保存先 | アプリケーションで使う方法 |
+| --- | --- | --- |
+| **enbu** | ワークスペースの環境ごとに値を管理し、既存の OCI レジストリや S3 互換ストレージに暗号文と署名付き履歴を保存 | 承認済みの端末で復号し、`enbu pull` で書き出すか `enbu run` で渡す |
+| **SOPS** | YAML、JSON、dotenv などのファイルを暗号化し、Git などで管理 | age や KMS などで復号し、アプリケーションに渡す |
+| **Doppler** | Doppler のサービス上でプロジェクトと設定を管理 | CLI で取得し、`doppler run` で環境変数として渡す |
+| **Infisical** | Infisical Cloud または自分で運用する Infisical インスタンスでプロジェクトや環境を管理 | CLI で取得し、`infisical secrets-manager run` で環境変数として渡す |
+
+暗号化した設定ファイルをコードと一緒にレビューする運用には SOPS、管理サービスに設定を集約する運用には Doppler や Infisical が候補です。
+既存の OCI や S3 を使い、端末ごとの鍵で開発用の値を共有するなら enbu が候補になります。
+本番と開発で閲覧者を分ける場合は、enbu では[ワークスペースを分けます](/ja/docs/team/#faq)。
+
+- [SOPS の対応形式と復号方法](https://getsops.io/docs/reference/)
+- [Doppler の CLI とシークレット取得](https://docs.doppler.com/docs/install-cli)
+- [Infisical のセルフホスティング](https://infisical.com/docs/self-hosting/overview)
+- [Infisical の CLI リファレンス](https://infisical.com/docs/cli/reference)
 
 ## ドキュメント
 

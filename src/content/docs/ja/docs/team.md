@@ -23,10 +23,23 @@ GHCR で作られた非公開パッケージには、初期状態では作成者
 3. 管理者は `enbu member approve` を実行し、表示されたフィンガープリントが本人から受け取ったものと一致することを確認して承認します。
 4. 承認が完了すると、参加した端末でも各環境の現在のシークレットを復号できます。参加したメンバーは `enbu pull` を実行します。
 
+<figure class="docs-flow">
+<ol lang="en">
+<li><strong>New device</strong><span>Request</span></li>
+<li><strong>Admin</strong><span>Verify + approve</span></li>
+<li><strong>New device</strong><span>Pull</span></li>
+</ol>
+<figcaption>フィンガープリントは参加要求とは別の経路で照合します。承認が済むと新しい端末で復号できます。</figcaption>
+</figure>
+
 ## 管理者とメンバーの役割
 
-- **Member** は、シークレットを読み取り、変更できます。
-- **Admin** は、Member の操作に加えて、端末の承認や削除、管理者権限の変更、履歴の整理ができます。
+| 操作 | Member | Admin |
+| --- | --- | --- |
+| シークレットの読み取りと変更 | 可 | 可 |
+| 端末の承認と削除 | 不可 | 可 |
+| 管理者権限の付与と取り消し | 不可 | 可 |
+| 履歴の整理と保存先の移行 | 不可 | 可 |
 
 最初にワークスペースを作った端末は Admin になります。
 管理者は `enbu member admin` で別のメンバーにも管理者権限を付与できます。

@@ -22,6 +22,12 @@ enbu init --storage s3://your-bucket/team/workspace --region ap-northeast-1
 保存先からは、公開鍵や署名付きのメンバー情報、変更の回数、暗号文のサイズなども確認できます。
 管理者にはデータの削除や取得を妨げる能力があるため、バックアップや可用性は保存先の運用として計画してください。
 
+| 保存先 | 認証に使うもの | 事前に用意するもの |
+| --- | --- | --- |
+| GHCR | GitHub のログインまたは `GITHUB_TOKEN` | GHCR にパッケージを作成できる権限 |
+| ほかの OCI レジストリ | Docker の認証情報 | レジストリへの読み書き権限 |
+| S3 互換ストレージ | AWS SDK が読み取る認証情報 | バケットと対象パスへの読み書き権限 |
+
 ## 保存先を変更する
 
 1. 空の移行先を用意し、チーム全員が元の保存先への書き込みを止めます。
@@ -35,6 +41,16 @@ CLI で S3 に移行するときは、次のように指定します。
 ```sh
 enbu storage migrate s3://your-bucket/team/workspace --region ap-northeast-1 --writes-paused
 ```
+
+<figure class="docs-flow">
+<ol lang="en">
+<li><strong>Pause writes</strong><span>Source</span></li>
+<li><strong>Copy + verify</strong><span>Destination</span></li>
+<li><strong>Share config</strong><span>enbu.toml</span></li>
+<li><strong>Resume writes</strong><span>Destination</span></li>
+</ol>
+<figcaption>移行中は全員が書き込みを止めます。移行先を読み戻して検証してから、チームの設定を切り替えます。</figcaption>
+</figure>
 
 ## 参考資料
 
