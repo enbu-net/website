@@ -8,7 +8,7 @@ It encrypts secrets for each team member's device and stores only ciphertext in 
 
 ## Install enbu Desktop
 
-Download the installer for your platform from the [enbu website](/#download) or [GitHub Releases](https://github.com/enbu-net/enbu/releases/latest).
+Download the installer for your platform from the [enbu website](/en/#download) or [GitHub Releases](https://github.com/enbu-net/enbu/releases/latest).
 
 ## Install the CLI
 

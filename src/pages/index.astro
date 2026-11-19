@@ -1,5 +1,29 @@
----
-import LandingPage from '../components/LandingPage.astro';
----
-
-<LandingPage locale="en" />
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>enbu</title>
+    <script is:inline>
+      let savedLocale;
+      try {
+        savedLocale = localStorage.getItem('enbu-locale');
+      } catch {
+        // Fall back to the browser language when storage is unavailable.
+      }
+      const prefersJapanese = navigator.languages.some((language) => /^ja(?:-|$)/i.test(language));
+      const locale = savedLocale === 'ja' || (!savedLocale && prefersJapanese) ? 'ja' : 'en';
+      location.replace('/' + locale + '/' + location.search + location.hash);
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>enbu</h1>
+      <ul>
+        <li><a href="/en/" lang="en">English</a></li>
+        <li><a href="/ja/" lang="ja">日本語</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

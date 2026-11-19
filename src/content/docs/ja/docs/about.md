@@ -1,6 +1,9 @@
 ---
 title: enbu とは
+slug: ja/about
 description: API キーやパスワードを端末で暗号化して共有する、オープンソースの .env 管理ツールです。
+sidebar:
+  order: 0
 ---
 
 enbu は、API キーやデータベースのパスワードを端末で暗号化し、開発チームや自分の複数端末で共有するツールです。

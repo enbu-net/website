@@ -8,24 +8,23 @@ import starlightCopyButton from "starlight-copy-button";
 // https://astro.build/config
 export default defineConfig({
   site: "https://enbu.net",
+  redirects: {
+    "/docs/": "/en/docs/",
+    "/docs.md": "/en/docs.md",
+  },
   integrations: [
     starlight({
       title: "enbu",
+      favicon: "/favicon.png",
       customCss: ["./src/styles/docs.css"],
-      // English at the root, Japanese under /ja/, as the landing pages are.
-      defaultLocale: "root",
+      expressiveCode: { defaultProps: { wrap: true } },
+      defaultLocale: "en",
       locales: {
-        root: { label: "English", lang: "en" },
+        en: { label: "English", lang: "en" },
         ja: { label: "日本語", lang: "ja" },
       },
       social: [{ icon: "github", label: "GitHub", href: "https://github.com/enbu-net/enbu" }],
-      sidebar: [
-        {
-          label: "Documentation",
-          translations: { ja: "ドキュメント" },
-          items: [{ autogenerate: { directory: "docs" } }],
-        },
-      ],
+      sidebar: [{ autogenerate: { directory: "docs" } }],
       plugins: [starlightLlmsTxt(), starlightDotMd(), starlightCopyButton({ label: "Copy as MD" })],
     }),
   ],

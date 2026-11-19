@@ -46,6 +46,25 @@ a {
   color: inherit;
 }
 
+.skip-link {
+  position: fixed;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  z-index: 30;
+  padding: 0.5rem 0.75rem;
+  background: var(--page);
+  color: var(--text);
+}
+
+.skip-link:not(:focus) {
+  clip-path: inset(50%);
+}
+
+:is(a, button):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;
@@ -54,22 +73,6 @@ a {
 .shell {
   width: min(1180px, calc(100% - 48px));
   margin-inline: auto;
-}
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-  background: color-mix(in srgb, var(--page) 92%, transparent);
-  backdrop-filter: blur(18px);
-}
-
-.nav {
-  display: flex;
-  height: 64px;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .brand {
@@ -87,110 +90,6 @@ a {
   width: 36px;
   height: 36px;
   object-fit: contain;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.nav-links a,
-.language-toggle {
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 550;
-  text-decoration: none;
-}
-
-.nav-links a:hover,
-.language-toggle:hover,
-.language-toggle[aria-expanded="true"] {
-  color: var(--text);
-}
-
-.nav-links .github-link,
-.language-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.github-link svg,
-.language-toggle > svg:first-child {
-  width: 18px;
-  height: 18px;
-}
-
-.github-link svg {
-  fill: currentColor;
-}
-
-.language-toggle svg,
-.language-menu svg {
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.7;
-}
-
-.language-control {
-  position: relative;
-}
-
-.language-toggle {
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  font-family: inherit;
-  padding: 8px 0;
-}
-
-.language-toggle .language-chevron {
-  width: 14px;
-  height: 14px;
-}
-
-.language-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  z-index: 30;
-  width: 170px;
-  padding: 6px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--page-soft);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-}
-
-.language-menu[hidden] {
-  display: none;
-}
-
-.language-menu a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px 10px;
-  border-radius: 4px;
-  color: var(--text);
-  font-size: 14px;
-  text-decoration: none;
-}
-
-.language-menu a:hover {
-  background: color-mix(in srgb, var(--blue) 12%, transparent);
-}
-
-.language-menu a[aria-current="page"] {
-  color: var(--blue);
-}
-
-.language-menu a svg {
-  width: 16px;
-  height: 16px;
 }
 
 .hero {
@@ -231,10 +130,6 @@ html[lang="ja"] .hero h1 {
   line-height: 1.12;
 }
 
-.headline-line {
-  white-space: nowrap;
-}
-
 .hero-summary {
   max-width: 570px;
   margin: 28px 0 0;
@@ -250,6 +145,7 @@ html[lang="ja"] .hero h1 {
   margin-top: 32px;
 }
 
+.docs-button,
 .primary-button {
   display: inline-flex;
   min-height: 50px;
@@ -261,6 +157,22 @@ html[lang="ja"] .hero h1 {
   font-weight: 600;
   padding: 12px 20px;
   text-decoration: none;
+}
+
+.docs-button {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.docs-button:hover {
+  background: var(--page-soft);
+}
+
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--blue);
 }
 
 .primary-button {
@@ -425,7 +337,7 @@ html[lang="ja"] .hero h1 {
 .dancer {
   position: absolute;
   top: -118px;
-  right: -78px;
+  right: 0;
   z-index: 3;
   width: 188px;
   height: 188px;
@@ -514,7 +426,7 @@ html[lang="ja"] .hero h1 {
 }
 
 .eyebrow {
-  color: #6e7681;
+  color: #8b949e;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.11em;
@@ -576,7 +488,7 @@ html[lang="ja"] .hero h1 {
   letter-spacing: -0.02em;
 }
 
-.panel-heading button {
+.panel-heading .mock-add-secret {
   border: 0;
   border-radius: 4px;
   background: #238636;
@@ -636,7 +548,7 @@ html[lang="ja"] .hero h1 {
 
 .terminal-title b {
   margin-left: auto;
-  color: #6e7681;
+  color: #8b949e;
   font-size: 8px;
   font-weight: 500;
 }
@@ -758,6 +670,7 @@ footer {
 
 .footer-meta {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 14px;
   color: var(--muted);
@@ -792,10 +705,6 @@ footer {
 @media (max-width: 760px) {
   .shell {
     width: min(100% - 32px, 620px);
-  }
-
-  .nav-links {
-    display: none;
   }
 
   .hero {
@@ -902,14 +811,14 @@ footer {
 
   .primary-button,
   .download-toggle {
-    background: #1f6feb;
+    background: #1a5fc8;
     color: #fff;
   }
 
   .primary-button:hover,
   .download-toggle:hover,
   .download-toggle[aria-expanded="true"] {
-    background: #388bfd;
+    background: #1f6feb;
   }
 }
 

@@ -1,3 +1,8 @@
+/* The search button's visible label should match its accessible name. */
+button[data-open-modal] > kbd {
+  display: none !important;
+}
+
 @media screen and (min-width: 72rem) {
   [data-has-toc] .main-pane .content-panel {
     padding-inline-end: calc(var(--sl-content-pad-x) + 0.75rem);

@@ -50,7 +50,6 @@ const translations = {
 		ogTitle: 'enbu — .env management, secured by your team',
 		ogDescription: 'A GitHub-native, end-to-end encrypted .env manager for development teams.',
 		title: 'enbu — GitHub-native .env management',
-		navLabel: 'Main navigation',
 		docs: 'Docs',
 		heroSummary: 'enbu keeps team secrets end-to-end encrypted and moves them through the GitHub workflow you already use.',
 		chooseDownload: 'Choose a download',
@@ -60,7 +59,7 @@ const translations = {
 		mobileDownload: 'Choose a desktop download',
 		downloadDetail: 'Desktop builds for macOS, Windows, and Linux',
 		allAssets: 'All release assets',
-		previewLabel: 'enbu desktop application preview',
+		previewLabel: 'Desktop preview showing encrypted secrets in the production environment and a terminal syncing them to a local file.',
 		securityKicker: 'SECURE BY DEFAULT',
 		securityTitle: 'Your secrets stay with your team.',
 		securitySummary: 'enbu uses GitHub as the shared layer without giving GitHub your plaintext values.',
@@ -76,8 +75,7 @@ const translations = {
 		ogTitle: 'enbu | .env を暗号化して共有',
 		ogDescription: '開発チームのためのオープンソースの .env 管理ツール。',
 		title: 'enbu | .env を暗号化して共有',
-		navLabel: 'メインナビゲーション',
-		docs: 'はじめる',
+		docs: 'ドキュメント',
 		heroSummary: 'API キーやパスワードを端末で暗号化し、チームで共有します。保存先は GitHub Container Registry、ほかの OCI レジストリ、S3 互換ストレージから選べます。',
 		chooseDownload: 'ダウンロードを選択',
 		downloadMacos: 'macOS版をダウンロード',
@@ -86,7 +84,7 @@ const translations = {
 		mobileDownload: 'デスクトップ版を選択',
 		downloadDetail: 'macOS、Windows、Linuxに対応',
 		allAssets: 'すべての配布物を見る',
-		previewLabel: 'enbuデスクトップアプリのプレビュー',
+		previewLabel: '本番環境のシークレットを一覧表示し、ターミナルでローカルファイルに同期する画面のプレビュー。',
 		securityKicker: '最初から安全に',
 		securityTitle: 'シークレットはチームの中だけに。',
 		securitySummary: '暗号化と復号は端末で行います。保存先には暗号文と署名付きの履歴を保存します。',
@@ -100,10 +98,9 @@ const translations = {
 
 const text = translations[locale];
 const languages = [
-	{ locale: 'en', label: 'English', href: '/' },
+	{ locale: 'en', label: 'English', href: '/en/' },
 	{ locale: 'ja', label: '日本語', href: '/ja/' },
 ] as const;
-const currentLanguage = languages.find((language) => language.locale === locale) ?? languages[0];
 ---
 
 <!doctype html>
@@ -116,68 +113,14 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 		<meta property="og:title" content={text.ogTitle} />
 		<meta property="og:description" content={text.ogDescription} />
 		<meta property="og:type" content="website" />
-		<link rel="alternate" hreflang="en" href="/" />
+		<link rel="alternate" hreflang="en" href="/en/" />
 		<link rel="alternate" hreflang="ja" href="/ja/" />
-		<link rel="icon" type="image/png" href={enbuLogo.src} />
+		<link rel="icon" type="image/png" href="/favicon.png" />
 		<title>{text.title}</title>
-		<script is:inline>
-			(() => {
-				if (document.documentElement.lang !== 'en' || location.pathname !== '/') return;
-				const savedLocale = localStorage.getItem('enbu-locale');
-				const prefersJapanese = navigator.languages?.some((language) => language.toLowerCase().startsWith('ja'));
-				if (savedLocale === 'ja' || (!savedLocale && prefersJapanese)) {
-					location.replace(`/ja/${location.search}${location.hash}`);
-				}
-			})();
-		</script>
 	</head>
 	<body>
-		<header class="site-header">
-			<nav class="nav shell" aria-label={text.navLabel}>
-				<a class="brand" href={isJapanese ? '/ja/' : '/'} aria-label="enbu home">
-					<Image class="brand-logo" src={enbuLogo} alt="" width={36} height={36} />
-					<span>enbu</span>
-				</a>
-				<div class="nav-links">
-					{isJapanese && <a href="/ja/about/">enbu とは</a>}
-					<a href={isJapanese ? '/ja/docs/' : '/docs/'}>{text.docs}</a>
-					<a class="github-link" href={repositoryUrl} target="_blank" rel="noreferrer">
-						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.82a9.6 9.6 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
-						<span>GitHub</span>
-					</a>
-				</div>
-				<div class="language-control">
-					<button
-						id="language-menu-toggle"
-						class="language-toggle"
-						type="button"
-						aria-label={isJapanese ? '言語を選択' : 'Choose language'}
-						aria-haspopup="menu"
-						aria-expanded="false"
-						aria-controls="language-menu"
-					>
-						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h12M9 3v2m4 0c-1 5-4 8-8 10m2-6c2 3 4 5 7 6m3-4 4 10m0-10-4 10m1-3h6" /></svg>
-						<span>{currentLanguage.label}</span>
-						<svg class="language-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
-					</button>
-					<div id="language-menu" class="language-menu" role="menu" hidden>
-						{languages.map((language) => (
-							<a
-								role="menuitem"
-								data-locale={language.locale}
-								href={language.href}
-								aria-current={language.locale === locale ? 'page' : undefined}
-							>
-								<span>{language.label}</span>
-								{language.locale === locale && <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8 3 3 7-7" /></svg>}
-							</a>
-						))}
-					</div>
-				</div>
-			</nav>
-		</header>
-
-		<main>
+		<a class="skip-link" href="#main-content">{isJapanese ? '本文へ移動' : 'Skip to main content'}</a>
+		<main id="main-content" tabindex="-1">
 			<section class="hero shell">
 				<div class="hero-copy">
 					{
@@ -189,6 +132,7 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 					}
 					<p class="hero-summary">{text.heroSummary}</p>
 					<div class="hero-actions">
+						<a class="docs-button" href={isJapanese ? '/ja/docs/' : '/en/docs/'}>{text.docs}</a>
 						<div id="download" class="download-control" data-release-api={releaseApiUrl}>
 							<a
 								id="primary-download"
@@ -207,27 +151,27 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 								class="download-toggle"
 								type="button"
 								aria-label={text.chooseDownload}
-								aria-haspopup="menu"
 								aria-expanded="false"
 								aria-controls="download-menu"
 							>
 								<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9h12l-6 7Z" /></svg>
 							</button>
-							<div id="download-menu" class="download-menu" role="menu" hidden>
+							<div id="download-menu" class="download-menu" hidden>
 								{downloads.map((download) => (
-									<a role="menuitem" href={releaseUrl} data-download={download.id}>
+									<a href={releaseUrl} data-download={download.id}>
 										<span><strong>{download.name}</strong><small>{download.detail}</small></span>
 										<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0 5-5m-5 5-5-5M5 20h14" /></svg>
 									</a>
 								))}
-								<a class="all-assets" role="menuitem" href={releaseUrl} target="_blank" rel="noreferrer">{text.allAssets}</a>
+								<a class="all-assets" href={releaseUrl} target="_blank" rel="noreferrer">{text.allAssets}</a>
 							</div>
 						</div>
 					</div>
 					<p id="download-detail" class="download-detail" aria-live="polite">{text.downloadDetail}</p>
+					{isJapanese && <a class="about-link" href="/ja/about/">enbu とは</a>}
 				</div>
 
-				<div class="product-stage" aria-label={text.previewLabel}>
+				<div class="product-stage" role="img" aria-label={text.previewLabel}>
 					<div class="glow glow-one"></div>
 					<div class="glow glow-two"></div>
 					<Image class="dancer" src={enbuLogo} alt="" width={188} height={188} />
@@ -248,7 +192,7 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 							<div class="secrets-panel">
 								<div class="panel-heading">
 									<div><span class="eyebrow">PRODUCTION</span><h2>Secrets</h2></div>
-									<button type="button" tabindex="-1">+ Add secret</button>
+									<span class="mock-add-secret">+ Add secret</span>
 								</div>
 								<div class="secret-row"><span>API_BASE_URL</span><code>••••••••••••</code><b>Encrypted</b></div>
 								<div class="secret-row"><span>DATABASE_URL</span><code>••••••••••••</code><b>Encrypted</b></div>
@@ -287,11 +231,17 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 
 		<footer>
 			<div class="footer-inner shell">
-				<a class="brand" href={isJapanese ? '/ja/' : '/'}><Image class="brand-logo" src={enbuLogo} alt="" width={36} height={36} /><span>enbu</span></a>
+				<a class="brand" href={isJapanese ? '/ja/' : '/en/'}><Image class="brand-logo" src={enbuLogo} alt="" width={36} height={36} /><span>enbu</span></a>
 				<p>
 					{isJapanese ? <><a href="/ja/about/">enbu とは</a> · <a href="/ja/docs/">はじめる</a></> : translations.en.footer}
 				</p>
 				<div class="footer-meta">
+					{languages.map((language) => (
+						<a href={language.href} lang={language.locale} data-locale={language.locale} aria-current={language.locale === locale ? 'page' : undefined}>
+							{language.label}
+						</a>
+					))}
+					<a href={repositoryUrl}>GitHub</a>
 					<span>© 2026 kota</span>
 					<a href={licenseUrl} target="_blank" rel="noreferrer">MIT License</a>
 				</div>
@@ -315,9 +265,6 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 			const toggle = document.querySelector<HTMLButtonElement>('#download-menu-toggle');
 			const menu = document.querySelector<HTMLElement>('#download-menu');
 			const downloadControl = document.querySelector<HTMLElement>('.download-control');
-			const languageToggle = document.querySelector<HTMLButtonElement>('#language-menu-toggle');
-			const languageMenu = document.querySelector<HTMLElement>('#language-menu');
-			const languageControl = document.querySelector<HTMLElement>('.language-control');
 			const releaseApi = downloadControl?.dataset.releaseApi;
 			const uaData = (navigator as Navigator & { userAgentData?: NavigatorUAData }).userAgentData;
 			const assetPatterns: Record<string, RegExp> = {
@@ -334,31 +281,21 @@ const currentLanguage = languages.find((language) => language.locale === locale)
 				menu.hidden = !open;
 			}
 
-			function setLanguageMenu(open: boolean) {
-				if (!languageToggle || !languageMenu) return;
-				languageToggle.setAttribute('aria-expanded', String(open));
-				languageMenu.hidden = !open;
-			}
-
 			toggle?.addEventListener('click', (event) => {
 				event.stopPropagation();
 				setMenu(toggle.getAttribute('aria-expanded') !== 'true');
 			});
 
-			languageToggle?.addEventListener('click', (event) => {
-				event.stopPropagation();
-				setLanguageMenu(languageToggle.getAttribute('aria-expanded') !== 'true');
-			});
-
 			document.addEventListener('click', (event) => {
 				if (!downloadControl?.contains(event.target as Node)) setMenu(false);
-				if (!languageControl?.contains(event.target as Node)) setLanguageMenu(false);
 			});
 
 			document.addEventListener('keydown', (event) => {
 				if (event.key === 'Escape') {
-					setMenu(false);
-					setLanguageMenu(false);
+					if (menu && !menu.hidden) {
+						if (menu.contains(document.activeElement)) toggle?.focus();
+						setMenu(false);
+					}
 				}
 			});
 
