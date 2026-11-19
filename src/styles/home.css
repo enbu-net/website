@@ -61,7 +61,7 @@ a {
 }
 
 :is(a, button):focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--blue);
   outline-offset: 3px;
 }
 
